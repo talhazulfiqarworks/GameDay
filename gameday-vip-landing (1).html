@@ -370,6 +370,29 @@
   .cities-form-row input:focus{outline:none;border-color:var(--green);}
   .cities-form-row .btn{white-space:nowrap;}
   .cities-form-note{font-size:12px;color:var(--gray);margin-top:10px;}
+  /* CONTACT */
+  .contact-card{
+    max-width:620px;margin:0 auto;background:var(--card);border:1px solid var(--border);
+    border-radius:18px;padding:26px 20px;
+  }
+  @media(min-width:640px){.contact-card{padding:34px 32px;}}
+  .contact-form{display:flex;flex-direction:column;gap:16px;}
+  .contact-row{display:flex;flex-direction:column;gap:16px;}
+  @media(min-width:640px){.contact-row{flex-direction:row;}.contact-row .contact-field{flex:1;}}
+  .contact-field{display:flex;flex-direction:column;gap:8px;}
+  .contact-field label{
+    font-size:12px;font-weight:700;color:var(--gray);
+    text-transform:uppercase;letter-spacing:0.5px;
+  }
+  .contact-field input,.contact-field textarea{
+    width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);
+    border-radius:10px;padding:12px 14px;color:var(--white);font-family:inherit;font-size:14px;
+  }
+  .contact-field textarea{resize:vertical;min-height:120px;line-height:1.6;}
+  .contact-field input:focus,.contact-field textarea:focus{outline:none;border-color:var(--green);}
+  .contact-field input::placeholder,.contact-field textarea::placeholder{color:#6b6b6b;}
+  .contact-form .btn{align-self:flex-start;}
+  .contact-note{font-size:12px;color:var(--gray);}
   .cities-success{display:none;margin-top:18px;background:rgba(92,255,61,0.08);border:1px solid rgba(92,255,61,0.3);border-radius:12px;padding:14px;font-size:13px;color:var(--white);text-align:center;}
   .cities-success.show{display:block;}
   .cities-success strong{color:var(--green);}
@@ -1031,6 +1054,40 @@
     </div>
   </section>
 
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Contact</span>
+        <h2>Get in touch</h2>
+        <p>Questions about membership, credits or partnerships? Send us a note and our team will get back to you.</p>
+      </div>
+      <div class="contact-card">
+        <form id="contactForm" class="contact-form" novalidate>
+          <div class="contact-row">
+            <div class="contact-field">
+              <label for="contactName">Name</label>
+              <input type="text" id="contactName" name="name" placeholder="Jane Smith" required>
+            </div>
+            <div class="contact-field">
+              <label for="contactEmail">Email</label>
+              <input type="email" id="contactEmail" name="email" placeholder="you@email.com" required>
+            </div>
+          </div>
+          <div class="contact-field">
+            <label for="contactMessage">Message</label>
+            <textarea id="contactMessage" name="message" placeholder="How can we help?" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+          <p class="contact-note">We typically reply within one business day.</p>
+        </form>
+        <div class="cities-success" id="contactSuccess">
+          <p>Thanks<span id="contactSuccessName"></span>! Your message is in &mdash; we&rsquo;ll reply to <strong id="contactSuccessEmail"></strong> shortly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FINAL CTA -->
   <section id="join">
     <div class="final-cta">
@@ -1048,7 +1105,7 @@
   </a>
   <div class="footer-links">
     <button type="button" class="footer-link" onclick="document.getElementById('influencerPage').classList.add('show')">Influencer &amp; Ambassador Program</button>
-    <a href="mailto:hello@gameday.vip" class="footer-link">Contact Us</a>
+    <a href="#contact" class="footer-link">Contact Us</a>
   </div>
   <p>&copy; Sports VIP Group 2026 GameDay.VIP (Los Angeles Pilot Program) &mdash; new cities coming soon.</p>
 </footer>
@@ -1334,6 +1391,24 @@
   });
   document.getElementById('citiesModal').addEventListener('click', function(e){
     if(e.target === this) this.classList.remove('show');
+  });
+
+  // ==== Contact form ====
+  var contactForm = document.getElementById('contactForm');
+  contactForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('contactName').value.trim();
+    var email = document.getElementById('contactEmail').value.trim();
+    var message = document.getElementById('contactMessage').value.trim();
+    if(!name || !email || !message){
+      contactForm.reportValidity();
+      return;
+    }
+    document.getElementById('contactSuccessName').textContent = ', ' + name;
+    document.getElementById('contactSuccessEmail').textContent = email;
+    document.getElementById('contactSuccess').classList.add('show');
+    contactForm.reset();
+    contactForm.style.display = 'none';
   });
 
   // ==== Join GameDay.VIP form -> Stripe ====
